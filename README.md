@@ -1,8 +1,4 @@
-# Microservices
-Microservices with Node JS and React
-
+# Microservices with Node JS and React
 Switch between branches to see the different projects:
-- blog
+- [blog](https://github.com/r1oga/microservices/tree/blog): posts, comments, query, moderation & event-bus services. Client
 
-# Resources
-[Stephen Grider](https://github.com/StephenGrider) udemy's course on [Microservices with Node JS and React](https://www.udemy.com/course/microservices-with-node-js-and-react/)
