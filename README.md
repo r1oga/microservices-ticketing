@@ -10,3 +10,25 @@
   - No other user can purchase a ticket while it is locked
   - Ticket price can't be edited while it is locked
 
+## Resources
+|User|Ticket|Order|Charge|
+|--|--|--|--|
+|email: string|title: string|userId: ref to User|orderId: ref to Order|
+|password: string|price: number|status: Created/Canceled/AwaitingPayment/Completed|status: Created/Completed/Failed|
+||userId: ref to User|ticketId: Ref to Ticket|amount: number|
+||orderId: ref to Order|expiresAt: Date|stripeId: string|
+||||stripeRefundId: string|
+## Services
+|Service||
+|--|--|
+|auth|sign-up/in/out|
+|tickets|Ticket creation/editing|
+|orders|Order creation/editing|
+|expiration|Watched for order to be created. Cancels them after 15 minutes|
+|payments|Handles credit card payments. Cancels orders if payment fails, completes if payment succeeds.
+|NATS Streaming Server|"event bus"
+
+
+## Events
+ - UserCreated
+ - UserUpdated
