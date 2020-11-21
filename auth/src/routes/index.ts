@@ -2,6 +2,8 @@ const { Router } = require('express')
 
 const router = Router()
 
-router.get('/', (_,res) => res.status(200).send({message: 'ON'}))
+router.get('/api/users/currentUser', (_, res) =>
+  res.status(200).send('Hi There')
+)
 
-module.exports = router
+export { router }
