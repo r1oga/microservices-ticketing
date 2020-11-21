@@ -16,11 +16,18 @@ router.post(
     const errors = validationResult(req)
 
     if (!errors.isEmpty()) {
-      return res.status(400).send(errors.array())
+      /* Instead of returning a response object with a status 400
+        throw an error to force it being caught
+        by the error handler middleware
+        
+       return res.status(400).send(errors.array())
+      */
+      throw new Error('Invalid email or password')
     }
 
     const { email, password } = req.body
     console.log('Creating a new user...')
+    throw new Error('error connecting to DB')
     res.status(200).send({})
   }
 )

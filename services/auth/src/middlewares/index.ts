@@ -1,3 +1,1 @@
-import express from 'express'
-
-export const middlewares = [express.json()]
+export { errorHandler } from './error-handler'

@@ -1,10 +1,9 @@
 const express = require('express')
 import { router } from './routes'
-import { middlewares } from './middlewares'
+import { errorHandler } from './middlewares'
 
 const app = express()
 
-app.use(middlewares)
-app.use(router)
+app.use([express.json(), router, errorHandler])
 
 app.listen(3000, () => console.log(`Auth service 👂 on port 3000`))
