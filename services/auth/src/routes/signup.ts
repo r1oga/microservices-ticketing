@@ -1,5 +1,6 @@
 import { Router, Request, Response } from 'express'
 import { body, validationResult } from 'express-validator'
+import { RequestValidationError, DBConnectionError } from '../errors'
 
 const router = Router()
 
@@ -19,15 +20,15 @@ router.post(
       /* Instead of returning a response object with a status 400
         throw an error to force it being caught
         by the error handler middleware
-        
+
        return res.status(400).send(errors.array())
       */
-      throw new Error('Invalid email or password')
+      throw new RequestValidationError(errors.array())
     }
 
     const { email, password } = req.body
     console.log('Creating a new user...')
-    throw new Error('error connecting to DB')
+    throw new DBConnectionError()
     res.status(200).send({})
   }
 )
