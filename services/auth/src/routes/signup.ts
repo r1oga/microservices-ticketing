@@ -1,5 +1,6 @@
 import { Router, Request, Response } from 'express'
 import { body, validationResult } from 'express-validator'
+import jwt from 'jsonwebtoken'
 import { RequestValidationError, BadRequestError } from '../errors'
 import { User } from '../models'
 
@@ -37,6 +38,13 @@ router.post(
     // Add user to DB
     const user = User.build({ email, password })
     await user.save()
+
+    // Generate JWT
+    const userJwt = jwt.sign({ email, id: user.id }, 'asd')
+
+    // Set it on the session
+    // to circumvent error triggerred by req.session.jwt = ...
+    req.session = { jwt: userJwt }
 
     res.status(201).send(user)
   }
