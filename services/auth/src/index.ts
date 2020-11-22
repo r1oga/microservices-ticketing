@@ -2,12 +2,19 @@ import express from 'express'
 import 'express-async-errors'
 import mongoose from 'mongoose'
 import { router } from './routes'
-import { errorHandler } from './middlewares'
+import { errorHandler, middlewares } from './middlewares'
 import { NotFoundError } from './errors'
 
 const app = express()
 
-app.use([express.json(), router])
+/* 
+  traffic is being proxied by ingress nginx
+  instruct express to trust it
+*/
+app.set('trust proxy', true)
+
+app.use([...middlewares, router])
+
 app.all('*', async (req, res) => {
   throw new NotFoundError()
 })
