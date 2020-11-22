@@ -1,7 +1,9 @@
 import { Router, Request, Response } from 'express'
-import { body, validationResult } from 'express-validator'
+import { body } from 'express-validator'
 import jwt from 'jsonwebtoken'
-import { RequestValidationError, BadRequestError } from '../errors'
+
+import { BadRequestError } from '../errors'
+import { validateRequest } from '../middlewares'
 import { User } from '../models'
 
 const router = Router()
@@ -15,19 +17,8 @@ router.post(
       .isLength({ min: 4, max: 20 })
       .withMessage('Password must be between 4 and 20 characters')
   ],
+  validateRequest,
   async (req: Request, res: Response) => {
-    const errors = validationResult(req)
-
-    if (!errors.isEmpty()) {
-      /* Instead of returning a response object with a status 400
-        throw an error to force it being caught
-        by the error handler middleware
-
-       return res.status(400).send(errors.array())
-      */
-      throw new RequestValidationError(errors.array())
-    }
-
     let { email, password } = req.body
     // does user with this email already exist in DB
     const existingUser = await User.findOne({ email })
