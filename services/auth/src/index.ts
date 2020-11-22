@@ -1,4 +1,5 @@
-const express = require('express')
+import express from 'express'
+import 'express-async-errors'
 import { router } from './routes'
 import { errorHandler } from './middlewares'
 import { NotFoundError } from './errors'
@@ -6,7 +7,7 @@ import { NotFoundError } from './errors'
 const app = express()
 
 app.use([express.json(), router])
-app.all('*', () => {
+app.all('*', async (req, res) => {
   throw new NotFoundError()
 })
 app.use(errorHandler)
