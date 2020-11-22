@@ -28,7 +28,7 @@ router.post(
 
     const { email, password } = req.body
     console.log('Creating a new user...')
-    throw new DBConnectionError()
+    // throw new DBConnectionError()
     res.status(200).send({})
   }
 )
