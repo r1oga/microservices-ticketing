@@ -1,4 +1,5 @@
 import mongoose from 'mongoose'
+import { Password } from '../lib'
 
 interface UserAttrs {
   email: string
@@ -31,6 +32,20 @@ interface UserDoc extends mongoose.Document {
   email: string
   password: string
 }
+
+// Hash password
+/*
+  Dont use arrow function done => {}!
+  This would overwrite `this` to the global context
+  We want use `this` to refer to the Document
+*/
+userSchema.pre('save', async function (done) {
+  if (this.isModified('password')) {
+    const hash = await Password.hash(this.get('password'))
+    this.set('password', hash)
+  }
+  done()
+})
 
 // build a custom function into a model
 userSchema.statics.build = (attrs: UserAttrs) => new User(attrs)

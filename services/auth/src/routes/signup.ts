@@ -34,8 +34,6 @@ router.post(
       throw new BadRequestError('Email already in use')
     }
 
-    // Hash password
-
     // Add user to DB
     const user = User.build({ email, password })
     await user.save()
