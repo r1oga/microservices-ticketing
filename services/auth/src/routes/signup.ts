@@ -40,7 +40,9 @@ router.post(
     await user.save()
 
     // Generate JWT
-    const userJwt = jwt.sign({ email, id: user.id }, 'asd')
+    // already type guard in start()
+    // tell typescript that JWT_KEY is not undefined with !
+    const userJwt = jwt.sign({ email, id: user.id }, process.env.JWT_KEY!)
 
     // Set it on the session
     // to circumvent error triggerred by req.session.jwt = ...

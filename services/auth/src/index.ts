@@ -22,6 +22,15 @@ app.use(errorHandler)
 
 const start = async () => {
   try {
+    /*
+      type guard for process.env.JWT_KEY
+      in start function rather than route file
+      so that error is caught right at app start
+    */
+    if (!process.env.JWT_KEY) {
+      throw new Error('JWT_KEY not defined')
+    }
+
     await mongoose.connect('mongodb://auth-mongo-srv:27017/auth', {
       useNewUrlParser: true,
       useUnifiedTopology: true,
