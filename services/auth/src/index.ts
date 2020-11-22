@@ -1,6 +1,7 @@
 import express from 'express'
 import 'express-async-errors'
 import mongoose from 'mongoose'
+
 import { router } from './routes'
 import { errorHandler, middlewares } from './middlewares'
 import { NotFoundError } from './errors'
