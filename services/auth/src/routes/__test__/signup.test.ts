@@ -47,4 +47,18 @@ it("can't signup twice with same email", async () => {
     .send({ email: 't@t.co', password: 'password' })
     .expect(400)
 })
-// it("can't signup twice with same email", async () => {})
+
+it('sets a cookieheader after signing up successfully', async () => {
+  const response = await request(app)
+    .post('/api/users/signup')
+    .send({ email: 't@t.co', password: 'password' })
+    .expect(201)
+
+  /*
+    Fails because we set the `secure` option
+    of the cookieSession middleware to true.
+    supertest set makes http requests not https
+    --> use process.env.NODE_ENV to check the env we're in
+  */
+  expect(response.get('Set-Cookie')).toBeDefined()
+})
