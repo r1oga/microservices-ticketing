@@ -36,4 +36,15 @@ it('returns a 400 if password or email are missing', async () => {
     .send({ email: '', password: 'password' })
     .expect(400)
 })
-it('', () => {})
+
+it("can't signup twice with same email", async () => {
+  await request(app)
+    .post('/api/users/signup')
+    .send({ email: 't@t.co', password: 'password' })
+    .expect(201)
+  await request(app)
+    .post('/api/users/signup')
+    .send({ email: 't@t.co', password: 'password' })
+    .expect(400)
+})
+// it("can't signup twice with same email", async () => {})
