@@ -1,14 +1,18 @@
 import axios from 'axios'
 import { useState } from 'react'
+import { useRequest } from '../../hooks'
 
 const SignUp = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-
+  const { errors, doRequest } = useRequest({
+    url: '/api/users/signup',
+    method: 'post',
+    body: { email, password }
+  })
   const onSubmit = async event => {
     event.preventDefault()
-    const response = await axios.post('/api/users/signup', { email, password })
-    console.log(response)
+    doRequest()
   }
 
   return (
@@ -17,7 +21,7 @@ const SignUp = () => {
       <div className='form-group'>
         <label>Email Address</label>
         <input
-          type='email'
+          type='text'
           className='form-control'
           value={email}
           onChange={e => setEmail(e.target.value)}
@@ -32,6 +36,7 @@ const SignUp = () => {
           onChange={e => setPassword(e.target.value)}
         />
       </div>
+      {errors}
       <button className='btn btn-primary'>Sign Up</button>
     </form>
   )
