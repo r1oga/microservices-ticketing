@@ -1,5 +1,5 @@
-import axios from 'axios'
 import { useState } from 'react'
+import Router from 'next/router'
 import { useRequest } from '../../hooks'
 
 const SignUp = () => {
@@ -8,7 +8,8 @@ const SignUp = () => {
   const { errors, doRequest } = useRequest({
     url: '/api/users/signup',
     method: 'post',
-    body: { email, password }
+    body: { email, password },
+    onSuccess: () => Router.push('/')
   })
   const onSubmit = async event => {
     event.preventDefault()
