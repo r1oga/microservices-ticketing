@@ -1,1 +1,1 @@
-export { default as currentUser } from './current-user'
+export { default as buildClient } from './build-axios-client'
