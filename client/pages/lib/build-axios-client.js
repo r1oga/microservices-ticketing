@@ -5,5 +5,8 @@ const baseURL =
     ? 'http://ingress-nginx-controller.ingress-nginx.svc.cluster.local'
     : ''
 
-const buildClient = ({ req: { headers } }) => axios.create({ baseURL, headers })
+const buildClient = ({ req }) => {
+  const { headers } = req
+  return axios.create({ baseURL, headers })
+}
 export default buildClient
