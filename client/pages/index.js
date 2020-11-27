@@ -1,15 +1,10 @@
 import { buildClient } from './lib'
-const LandingPage = ({ currentUser }) => (
-  <>
-    <h1>Landing page!!</h1>
-    {currentUser && <div>Logged in as {currentUser.email}</div>}
-  </>
-)
+const LandingPage = ({ currentUser, extra }) => {
+  return <h1>Landing page!!</h1>
+}
 
 export async function getServerSideProps(context) {
-  const axios = buildClient(context)
-  const { data } = await axios.get('/api/users/currentuser')
-  return { props: data }
+  return { props: { extra: 'test' } }
 }
 
 export default LandingPage

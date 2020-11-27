@@ -1,7 +1,5 @@
-const SignIn = () => (
-  <form action=''>
-    <h1>Sign In</h1>
-  </form>
-)
+import { SignForm } from '../../components'
+
+const SignIn = () => <SignForm url='/api/users/signin' action='Sign In' />
 
 export default SignIn
