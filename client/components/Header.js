@@ -20,7 +20,10 @@ const Header = ({ currentUser }) => {
         <a className='navbar-brand'>Tickecting</a>
       </Link>
       <div className='d-flex justify-content-end'>
-        <ul className='nav d-flex-aling-items-center'>{links}</ul>
+        <ul className='nav d-flex-aling-items-center'>
+          <li className='nav-item'>{currentUser?.email}</li>
+          {links}
+        </ul>
       </div>
     </nav>
   )

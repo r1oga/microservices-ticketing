@@ -1,4 +1,3 @@
-import { buildClient } from './lib'
 const LandingPage = ({ currentUser, extra }) => {
   return <h1>Landing page!!</h1>
 }

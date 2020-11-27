@@ -1,13 +1,10 @@
 import 'bootstrap/dist/css/bootstrap.css'
-import Link from 'next/link'
-import { useState } from 'react'
 
 import { Header } from '../components'
-import { buildClient } from './lib'
+import { buildClient } from '../lib'
 
 const _App = ({ Component, pageProps }) => {
   const { currentUser } = pageProps
-  const [logged, setLogged] = useState(currentUser !== null)
   return (
     <>
       <Header currentUser={currentUser} />
