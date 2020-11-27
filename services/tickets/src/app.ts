@@ -1,8 +1,13 @@
 import express from 'express'
 import 'express-async-errors'
 
-// import { router } from './routes'
-import { errorHandler, middlewares, NotFoundError } from '@r1ogatix/common'
+import { router } from './routes'
+import {
+  errorHandler,
+  middlewares,
+  NotFoundError,
+  currentUser
+} from '@r1ogatix/common'
 
 const app = express()
 
@@ -12,7 +17,7 @@ const app = express()
 */
 app.set('trust proxy', true)
 
-app.use([...middlewares])
+app.use([...middlewares, currentUser, router])
 
 app.all('*', async (req, res) => {
   throw new NotFoundError()
