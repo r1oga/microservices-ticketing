@@ -1,6 +1,6 @@
 import { Router } from 'express'
 
-import { currentUser } from '../middlewares'
+import { currentUser } from '@r1ogatix/common'
 const router = Router()
 
 router.get('/api/users/currentuser', currentUser, (req, res) => {

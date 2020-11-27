@@ -2,9 +2,8 @@ import { Router, Request, Response } from 'express'
 import { body } from 'express-validator'
 import jwt from 'jsonwebtoken'
 
-import { validateRequest } from '../middlewares'
+import { validateRequest, BadRequestError } from '@r1ogatix/common'
 import { User } from '../models'
-import { BadRequestError } from '../errors'
 import { Password } from '../lib'
 
 const router = Router()

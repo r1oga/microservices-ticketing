@@ -2,8 +2,7 @@ import express from 'express'
 import 'express-async-errors'
 
 import { router } from './routes'
-import { errorHandler, middlewares } from './middlewares'
-import { NotFoundError } from './errors'
+import { errorHandler, middlewares, NotFoundError } from '@r1ogatix/common'
 
 const app = express()
 
