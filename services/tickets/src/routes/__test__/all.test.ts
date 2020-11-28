@@ -1,6 +1,8 @@
 import request from 'supertest'
 
 import { app } from '../../app'
+import { CreateTicket } from '../../lib'
+const createTicket = CreateTicket(app)
 
 it('can fetch a list of tickets', async () => {
   await Promise.all(
@@ -9,11 +11,7 @@ it('can fetch a list of tickets', async () => {
       { title: 'ticket2', price: 5 },
       { title: 'ticket3', price: 6 }
     ].map(async ({ title, price }) => {
-      await request(app)
-        .post('/api/tickets')
-        .set('Cookie', global.signup())
-        .send({ title, price })
-        .expect(201)
+      await createTicket({ title, price })
     })
   )
 
