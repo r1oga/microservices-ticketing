@@ -1,4 +1,4 @@
-import { Router, Request, Response } from 'express'
+import { Router } from 'express'
 import { NotFoundError } from '@r1ogatix/common'
 
 import { Ticket } from '../models'
@@ -12,4 +12,4 @@ router.get('/api/tickets/:id', async ({ params: { id } }, res) => {
   return res.status(200).send(ticket)
 })
 
-export { router as showTicketRouter }
+export { router as showOneTicketRouter }
