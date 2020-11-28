@@ -23,5 +23,4 @@ it('returns the ticket if the ticket is found', async () => {
 
   expect(title).toEqual('test')
   expect(price).toEqual(5)
-  expect(userId).toEqual('1')
 })

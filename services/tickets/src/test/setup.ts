@@ -3,8 +3,6 @@ import { MongoMemoryServer } from 'mongodb-memory-server'
 import mongoose from 'mongoose'
 import jwt from 'jsonwebtoken'
 
-import { app } from '../app'
-
 /*
   to tell TypeScript about global signup function,
   augment type definition
@@ -12,7 +10,7 @@ import { app } from '../app'
 declare global {
   namespace NodeJS {
     interface Global {
-      signup(): string[]
+      signup(email?: string): string[]
     }
   }
 }
@@ -48,11 +46,11 @@ afterAll(async () => {
   globally scoped function for easier use
   only available in test env
 */
-global.signup = () => {
+global.signup = (email = 'r1oga@test.com') => {
   // Create fake cookie
   // Build a JWT payload & create the JWT
   const token = jwt.sign(
-    { email: 'r1oga@test.com', id: '1' },
+    { email, id: new mongoose.Types.ObjectId().toHexString() },
     process.env.JWT_KEY!
   )
 

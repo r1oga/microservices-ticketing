@@ -35,6 +35,5 @@ it('creates a ticket if valid inputs are provided', async () => {
 
   expect(title).toEqual('test')
   expect(price).toEqual(5)
-  expect(userId).toEqual('1')
   expect((await Ticket.find({})).length).toEqual(1)
 })
