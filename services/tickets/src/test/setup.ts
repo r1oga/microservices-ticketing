@@ -49,14 +49,10 @@ afterAll(async () => {
   only available in test env
 */
 global.signup = () => {
-  /*
-    Create fake cookie
-    Decoded on
-    https://www.base64decode.org/
-  */
+  // Create fake cookie
   // Build a JWT payload & create the JWT
   const token = jwt.sign(
-    { email: 'r1oga@test.com', id: 1 },
+    { email: 'r1oga@test.com', id: '1' },
     process.env.JWT_KEY!
   )
 

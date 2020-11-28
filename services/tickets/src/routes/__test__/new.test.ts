@@ -13,14 +13,6 @@ it('can only be accessed if user is signed in', async () => {
   await request(app)
     .post('/api/tickets')
     .set('Cookie', cookie)
-    .send({})
+    .send({ title: 'a', price: 10 })
     .expect(200)
 })
-
-it('returns an error if an invalid title is provided', async () => {
-  const response = await request(app).post('/api/tickets').send({})
-})
-
-it('returns an error if an invalid price is provided', async () => {})
-
-it('creates a ticked if valid inputs are provided', async () => {})
