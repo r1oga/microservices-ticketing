@@ -49,7 +49,7 @@ const userSchema = new mongoose.Schema(
 /*
   Dont use arrow function done => {}!
   This would overwrite `this` to the global context
-  We want use `this` to refer to the Document
+  We want `this` to still refer to the Document
 */
 userSchema.pre('save', async function (done) {
   if (this.isModified('password')) {
