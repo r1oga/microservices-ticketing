@@ -1,4 +1,15 @@
 # Microservices: Ticketing application
+## Quickstart
+**Requirements:** [ingress-nginx](https://kubernetes.github.io/ingress-nginx/deploy/) enabled, [skaffold](https://skaffold.dev/)
+
+- GCE/GCK:
+  - `skaffold dev`  
+- Minikube
+  1. Rebuild images: `docker build -f <path/to/Dockerfile> -t <tag> .`
+  2. Push to Docker hub: `docker push -t <tag>`
+  3. Update image values in [k8s config files](./k8s)
+  4. `skaffold dev`
+
 ## Features
 - Production grade authentication
 - Production grade event bus
@@ -30,5 +41,3 @@
 
 
 ## Events
- - UserCreated
- - UserUpdated
