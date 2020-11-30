@@ -1,6 +1,7 @@
 import request from 'supertest'
 
 import { app } from '../../app'
+import { natsWrapper } from '../../nats-wrapper'
 import { Ticket } from '../../models'
 import { CreateTicket } from '../../lib'
 const createTicket = CreateTicket(app)
@@ -36,4 +37,10 @@ it('creates a ticket if valid inputs are provided', async () => {
   expect(title).toEqual('test')
   expect(price).toEqual(5)
   expect((await Ticket.find({})).length).toEqual(1)
+})
+
+it('publishes an event', async () => {
+  await createTicket({ title: 'test', price: 5 }).expect(201)
+
+  expect(natsWrapper.client.publish).toHaveBeenCalledTimes(1)
 })

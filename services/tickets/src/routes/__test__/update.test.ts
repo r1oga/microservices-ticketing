@@ -1,6 +1,7 @@
 import request from 'supertest'
 
 import { app } from '../../app'
+import { natsWrapper } from '../../nats-wrapper'
 import { CreateTicket, fakeId } from '../../lib'
 const createTicket = CreateTicket(app)
 
@@ -60,4 +61,16 @@ it('update existing ticket provided valid inputs', async () => {
   const { title, price } = ticket.body
   expect(title).toEqual('retest')
   expect(price).toEqual(10)
+})
+
+it('publishes an event', async () => {
+  const cookie = global.signup()
+  const response = await createTicket({ title: 'test', price: 5 }, cookie)
+  await request(app)
+    .put(`/api/tickets/${response.body.id}`)
+    .set('Cookie', cookie)
+    .send({ title: 'retest', price: 10 })
+    .expect(200)
+
+  expect(natsWrapper.client.publish).toHaveBeenCalledTimes(2)
 })
