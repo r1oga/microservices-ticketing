@@ -8,6 +8,8 @@ import {
 } from '@r1ogatix/common'
 
 import { Ticket } from '../models'
+import { TicketUpdatedPublisher } from '../events'
+import { natsWrapper } from '../nats-wrapper'
 
 const router = Router()
 
@@ -37,6 +39,12 @@ router.put(
     // Update ticket in DB
     ticket.set({ title, price })
     await ticket.save()
+
+    // emit event
+    new TicketUpdatedPublisher(natsWrapper.client).publish(
+      Object.assign(ticket, { id: ticket.id })
+    )
+
     return res.status(200).send(ticket)
   }
 )
