@@ -8,6 +8,7 @@ import { Order, OrderStatus } from './order'
   This code is specific to orders
 */
 export interface TicketAttrs {
+  id: string
   title: string
   price: number
 }
@@ -48,7 +49,12 @@ const TicketSchema = new mongoose.Schema(
 )
 
 // build a custom function into a model
-TicketSchema.statics.build = (attrs: TicketAttrs) => new Ticket(attrs)
+TicketSchema.statics.build = ({ id, title, price }: TicketAttrs) =>
+  new Ticket({
+    _id: id,
+    title,
+    price
+  })
 TicketSchema.methods.isReserved = async function () {
   // this === the ticket doc we just called `isReserved` on
   const existingOrder = await Order.findOne({
