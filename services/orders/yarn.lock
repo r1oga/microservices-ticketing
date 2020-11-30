@@ -467,9 +467,9 @@
     chalk "^4.0.0"
 
 "@r1ogatix/common@^1.0.5":
-  version "1.0.14"
-  resolved "https://registry.yarnpkg.com/@r1ogatix/common/-/common-1.0.14.tgz#9213c333324a02de2f108d19b0bbebe4a495a52f"
-  integrity sha512-b9bD5TJ7OqkTRHt5djljlXyfH7+VY39GeQHRuP011b3S/YEsI6ld7tcJLA+fTwXCM/2uDDokHmtTdDb8O73VGg==
+  version "1.0.16"
+  resolved "https://registry.yarnpkg.com/@r1ogatix/common/-/common-1.0.16.tgz#64e54767d76488e35b81554f35858de644cbfd4e"
+  integrity sha512-dHrcgtNknsdN8bkTJ4mvzf9dN8Kvk6JGLTpN5QnHXtr8brI8wAH9RwcceOWihwKzZSVyboDliKHZ7YjHrTTjxA==
   dependencies:
     "@types/cookie-session" "^2.0.41"
     "@types/express" "^4.17.9"
@@ -4843,9 +4843,9 @@ validate-npm-package-license@^3.0.1:
     spdx-expression-parse "^3.0.0"
 
 validator@^13.1.1:
-  version "13.5.0"
-  resolved "https://registry.yarnpkg.com/validator/-/validator-13.5.0.tgz#9ddd54514fff226f4f05cb6340c357183b54a256"
-  integrity sha512-swCJwyC4QdPvk16CagC126fqi6V6PRYTawdSc+F+eQv58uS1cmggGMPTKc6QQ90YFGsWjWgiGcSTmzx96p2U6Q==
+  version "13.5.1"
+  resolved "https://registry.yarnpkg.com/validator/-/validator-13.5.1.tgz#3926dfdd07a7e7325ab657fe46f2143eac55f076"
+  integrity sha512-s+7LW1Xi0OzPNfGN7Hb2vk0YB/epp9KFHHGC5JtqZOE1dUkN4ULPFZAQ1inCu7ceAsWmOJu6sn9cnwm3R+ghWQ==
 
 vary@~1.1.2:
   version "1.1.2"

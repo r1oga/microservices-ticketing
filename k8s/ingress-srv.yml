@@ -22,7 +22,7 @@ spec:
             backend:
               serviceName: orders-srv
               servicePort: 3000
-          - path: /?(.*)
+          - path: /?(.*) # catch all
             backend:
               serviceName: client-srv
               servicePort: 3000
