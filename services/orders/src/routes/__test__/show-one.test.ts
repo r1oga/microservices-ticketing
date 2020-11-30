@@ -49,3 +49,11 @@ it('returns 401 if user is not authenticated', async () => {
 
   await request(app).get(`/api/orders/${order.id}`).send().expect(401)
 })
+
+it('returns 400 if the orderId is not a MongoDB ObjectId', async () => {
+  await request(app)
+    .get('/api/orders/123')
+    .set('Cookie', global.signup())
+    .send()
+    .expect(400)
+})

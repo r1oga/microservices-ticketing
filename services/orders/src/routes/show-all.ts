@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import { currentUser, requireAuth } from '@r1ogatix/common'
+import { requireAuth } from '@r1ogatix/common'
 
 import { Order } from '../models'
 
