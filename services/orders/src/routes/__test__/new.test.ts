@@ -3,7 +3,7 @@ import request from 'supertest'
 import { app } from '../../app'
 import { natsWrapper } from '../../nats-wrapper'
 import { Ticket, Order, OrderStatus } from '../../models'
-import { fakeId } from '../../lib'
+import { fakeId, createTicket, createOrder } from '../../lib'
 
 it('returns an error if the ticket does not exist', async () => {
   const ticketId = fakeId()
@@ -17,17 +17,15 @@ it('returns an error if the ticket does not exist', async () => {
 
 it('returns an error if the ticket is already reserved', async () => {
   // create ticket
-  const ticket = Ticket.build({ title: 'concert', price: 20 })
-  await ticket.save()
+  const ticket = await createTicket()
 
   // create order
-  const order = Order.build({
+  await createOrder({
     ticket,
     userId: '123',
     status: OrderStatus.Created,
     expiresAt: new Date()
   })
-  await order.save()
 
   await request(app)
     .post('/api/orders')
@@ -37,8 +35,7 @@ it('returns an error if the ticket is already reserved', async () => {
 })
 
 it('reserves a ticket', async () => {
-  const ticket = Ticket.build({ title: 'concert', price: 20 })
-  await ticket.save()
+  const ticket = await createTicket()
 
   const response = await request(app)
     .post('/api/orders')
@@ -60,3 +57,5 @@ it('reserves a ticket', async () => {
   expect(ticket.price).toEqual(price)
   expect(ticket.id).toEqual(ticketId)
 })
+
+it.todo('emits an order created event')

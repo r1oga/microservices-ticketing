@@ -7,7 +7,7 @@ import { Order, OrderStatus } from './order'
   But DONT PUT it in common package
   This code is specific to orders
 */
-interface TicketAttrs {
+export interface TicketAttrs {
   title: string
   price: number
 }

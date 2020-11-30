@@ -3,7 +3,7 @@ import { OrderStatus } from '@r1ogatix/common'
 export { OrderStatus }
 import { TicketDoc } from './ticket'
 
-interface OrderAttrs {
+export interface OrderAttrs {
   userId: string
   status: OrderStatus
   expiresAt: Date
