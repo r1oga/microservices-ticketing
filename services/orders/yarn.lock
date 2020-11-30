@@ -467,9 +467,9 @@
     chalk "^4.0.0"
 
 "@r1ogatix/common@^1.0.5":
-  version "1.0.16"
-  resolved "https://registry.yarnpkg.com/@r1ogatix/common/-/common-1.0.16.tgz#64e54767d76488e35b81554f35858de644cbfd4e"
-  integrity sha512-dHrcgtNknsdN8bkTJ4mvzf9dN8Kvk6JGLTpN5QnHXtr8brI8wAH9RwcceOWihwKzZSVyboDliKHZ7YjHrTTjxA==
+  version "1.0.17"
+  resolved "https://registry.yarnpkg.com/@r1ogatix/common/-/common-1.0.17.tgz#8e3303a4db4e4f54a1e23a12828c569d0b9abe06"
+  integrity sha512-zXW13MbA6alsCOONKRNJmj3EGvrBo7YUgTyNTjyGn9umL+nq/eKjoH4u9ntUZ2nIZ4VS+Ub3ofQqpxXyR3s3Iw==
   dependencies:
     "@types/cookie-session" "^2.0.41"
     "@types/express" "^4.17.9"

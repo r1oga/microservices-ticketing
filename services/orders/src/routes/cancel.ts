@@ -9,6 +9,8 @@ import {
 import { param } from 'express-validator'
 
 import { Order } from '../models'
+import { OrderCancelledPublisher } from '../events'
+import { natsWrapper } from '../nats-wrapper'
 
 const router = Router()
 
@@ -23,7 +25,7 @@ router.patch(
   validateRequest,
   async (req: Request, res: Response) => {
     const orderId: string = req.params.orderId
-    const order = await Order.findById(orderId)
+    const order = await Order.findById(orderId).populate('ticket')
 
     if (!order) throw new NotFoundError()
     if (order.userId !== req.currentUser!.id)
@@ -33,6 +35,10 @@ router.patch(
     await order.save()
 
     // Publish event
+    new OrderCancelledPublisher(natsWrapper.client).publish({
+      id: order.id,
+      ticket: { id: order.ticket.id }
+    })
 
     return res.status(200).send(order)
   }

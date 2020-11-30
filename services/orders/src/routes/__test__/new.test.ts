@@ -58,4 +58,14 @@ it('reserves a ticket', async () => {
   expect(ticket.id).toEqual(ticketId)
 })
 
-it.todo('emits an order created event')
+it('emits an order:created event', async () => {
+  const ticket = await createTicket()
+
+  await request(app)
+    .post('/api/orders')
+    .set('Cookie', global.signup())
+    .send({ ticketId: ticket.id })
+    .expect(201)
+
+  expect(natsWrapper.client.publish).toHaveBeenCalledTimes(1)
+})

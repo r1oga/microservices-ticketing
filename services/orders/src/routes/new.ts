@@ -8,9 +8,9 @@ import {
   OrderStatus
 } from '@r1ogatix/common'
 
-// import { TicketCreatedPublisher } from '../events'
 import { Order, Ticket } from '../models'
 import { natsWrapper } from '../nats-wrapper'
+import { OrderCreatedPublisher } from '../events'
 
 const EXPIRATION_WINDOW_SECONDS = 15 * 60
 const router = Router()
@@ -51,12 +51,20 @@ router.post(
       ticket
     })
     await order.save()
+    const { id, userId, status } = order
 
     /*
       Publish event
       not relevant to await it, would add more latency
       relevant is to handle publish failures
     */
+    new OrderCreatedPublisher(natsWrapper.client).publish({
+      id,
+      expiresAt: order.expiresAt.toISOString(),
+      ticket: { id: ticket.id, price: ticket.price },
+      userId,
+      status
+    })
 
     return res.status(201).send(order)
   }

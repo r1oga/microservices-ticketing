@@ -3,6 +3,7 @@ import { OrderStatus } from '@r1ogatix/common'
 
 import { app } from '../../app'
 import { createTicket, fakeId } from '../../lib'
+import { natsWrapper } from '../../nats-wrapper'
 
 it('returns 404 if no orders found for given orderId', async () => {
   const ticket = await createTicket()
@@ -72,8 +73,24 @@ it('cancels one order', async () => {
     .expect(200)
 
   expect(cancelledOrder.id).toEqual(order.id)
-  expect(cancelledOrder.ticket).toEqual(ticket.id)
+  expect(cancelledOrder.ticket.id).toEqual(ticket.id)
   expect(cancelledOrder.status).toEqual(OrderStatus.Cancelled)
 })
 
-it.todo('emits a oder:cancelled event')
+it('emits an oder:cancelled event', async () => {
+  const ticket = await createTicket()
+  const cookie = global.signup()
+  const { body: order } = await request(app)
+    .post('/api/orders')
+    .set('Cookie', cookie)
+    .send({ ticketId: ticket.id })
+    .expect(201)
+
+  await request(app)
+    .patch(`/api/orders/${order.id}`)
+    .set('Cookie', cookie)
+    .send()
+    .expect(200)
+
+  expect(natsWrapper.client.publish).toHaveBeenCalledTimes(2)
+})
