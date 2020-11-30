@@ -57,3 +57,21 @@ it('returns 400 if the orderId is not a MongoDB ObjectId', async () => {
     .send()
     .expect(400)
 })
+
+it('returns 403 if authenticated user is not the one who created the order', async () => {
+  const ticket = await createTicket()
+  const userOne = global.signup()
+  const userTwo = global.signup()
+
+  const { body: order } = await request(app)
+    .post('/api/orders')
+    .set('Cookie', userOne)
+    .send({ ticketId: ticket.id })
+    .expect(201)
+
+  await request(app)
+    .get(`/api/orders/${order.id}`)
+    .set('Cookie', userTwo)
+    .send()
+    .expect(403)
+})

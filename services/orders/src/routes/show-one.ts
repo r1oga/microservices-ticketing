@@ -1,5 +1,10 @@
 import { Router, Response, Request } from 'express'
-import { NotFoundError, requireAuth, validateRequest } from '@r1ogatix/common'
+import {
+  NotFoundError,
+  requireAuth,
+  validateRequest,
+  ForbiddenError
+} from '@r1ogatix/common'
 import { param } from 'express-validator'
 
 import { Order } from '../models'
@@ -17,10 +22,12 @@ router.get(
   validateRequest,
   async (req: Request, res: Response) => {
     const orderId: string = req.params.orderId
-    const orders = await Order.findById(orderId).populate('ticket')
+    const order = await Order.findById(orderId).populate('ticket')
 
-    if (!orders) throw new NotFoundError()
-    return res.status(200).send(orders)
+    if (!order) throw new NotFoundError()
+    if (order.userId !== req.currentUser!.id)
+      throw new ForbiddenError('You are not the owner of this order')
+    return res.status(200).send(order)
   }
 )
 
