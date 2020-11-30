@@ -1,20 +1,24 @@
 import mongoose from 'mongoose'
+
 import { app } from './app'
+import { natsWrapper } from './nats-wrapper'
 
 const start = async () => {
-  try {
-    /*
-      type guard for process.env.JWT_KEY
-      in start function rather than route file
-      so that error is caught right at app start
-    */
-    if (!process.env.JWT_KEY) {
-      throw new Error('JWT_KEY not defined')
-    }
+  /*
+    type guard for process.env.JWT_KEY
+    in start function rather than route file
+    so that error is caught right at app start
+  */
+  if (!process.env.JWT_KEY) {
+    throw new Error('JWT_KEY not defined')
+  }
 
-    if (!process.env.MONGO_URI) {
-      throw new Error('MONGO_URI not defined')
-    }
+  if (!process.env.MONGO_URI) {
+    throw new Error('MONGO_URI not defined')
+  }
+
+  try {
+    await natsWrapper.connect('ticketing', '123', 'http://nats-srv:4222')
 
     await mongoose.connect(process.env.MONGO_URI, {
       useNewUrlParser: true,

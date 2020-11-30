@@ -2,7 +2,9 @@ import { Router, Request, Response } from 'express'
 import { body } from 'express-validator'
 import { requireAuth, validateRequest } from '@r1ogatix/common'
 
+import { TicketCreatedPublisher } from '../events'
 import { Ticket } from '../models'
+import { natsWrapper } from '../nats-wrapper'
 
 const router = Router()
 
@@ -27,6 +29,12 @@ router.post(
     // Sure that currentUser is not undefined due to requireAuth middleware
     const ticket = Ticket.build({ title, price, userId: currentUser!.id })
     await ticket.save()
+
+    // emit event
+    new TicketCreatedPublisher(natsWrapper.client).publish(
+      Object.assign(ticket, { id: ticket.id })
+    )
+
     return res.status(201).send(ticket)
   }
 )
