@@ -46,3 +46,14 @@ it('fetches all orders for a particular user', async () => {
   expect(orders[0].ticket.title).toEqual(ticketTwo.title)
   expect(orders[1].ticket.title).toEqual(ticketThree.title)
 })
+
+it('returns 401 if user is not authenticated', async () => {
+  const ticket = await createTicket()
+  await request(app)
+    .post('/api/orders')
+    .set('Cookie', global.signup())
+    .send({ ticketId: ticket.id })
+    .expect(201)
+
+  await request(app).get('/api/orders').send().expect(401)
+})

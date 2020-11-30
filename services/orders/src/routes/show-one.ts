@@ -1,15 +1,19 @@
 import { Router } from 'express'
-import { NotFoundError } from '@r1ogatix/common'
+import { NotFoundError, requireAuth } from '@r1ogatix/common'
 
 import { Order } from '../models'
 
 const router = Router()
 
-router.get('/api/orders/:orderId', async ({ params: { orderId } }, res) => {
-  const order = '' //await Order.findById(orderId)
+router.get(
+  '/api/orders/:orderId',
+  requireAuth,
+  async ({ params: { orderId } }, res) => {
+    const orders = await Order.findById(orderId).populate('ticket')
 
-  if (!order) throw new NotFoundError()
-  return res.status(200).send(order)
-})
+    if (!orders) throw new NotFoundError()
+    return res.status(200).send(orders)
+  }
+)
 
 export { router as showOneOrderRouter }
