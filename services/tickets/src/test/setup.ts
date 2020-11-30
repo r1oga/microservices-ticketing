@@ -1,4 +1,3 @@
-import request from 'supertest'
 import { MongoMemoryServer } from 'mongodb-memory-server'
 import mongoose from 'mongoose'
 import jwt from 'jsonwebtoken'
@@ -14,6 +13,8 @@ declare global {
     }
   }
 }
+
+jest.mock('../nats-wrapper.ts')
 
 let mongo: any
 beforeAll(async () => {

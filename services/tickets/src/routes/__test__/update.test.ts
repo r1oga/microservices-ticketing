@@ -4,6 +4,8 @@ import { app } from '../../app'
 import { CreateTicket, fakeId } from '../../lib'
 const createTicket = CreateTicket(app)
 
+jest.mock('../../nats-wrapper.ts')
+
 it('returns 404 no ticket matches the provided id', async () => {
   await request(app)
     .put(`/api/tickets/${fakeId()}`)

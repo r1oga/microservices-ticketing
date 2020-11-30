@@ -40,7 +40,11 @@ router.put(
     ticket.set({ title, price })
     await ticket.save()
 
-    // emit event
+    /*
+      emit event
+      not relevant to await it, would add more latency
+      relevant is to handle publish failures
+    */
     new TicketUpdatedPublisher(natsWrapper.client).publish(
       Object.assign(ticket, { id: ticket.id })
     )

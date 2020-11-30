@@ -30,7 +30,11 @@ router.post(
     const ticket = Ticket.build({ title, price, userId: currentUser!.id })
     await ticket.save()
 
-    // emit event
+    /*
+      emit event
+      not relevant to await it, would add more latency
+      relevant is to handle publish failures
+    */
     new TicketCreatedPublisher(natsWrapper.client).publish(
       Object.assign(ticket, { id: ticket.id })
     )
