@@ -20,6 +20,18 @@ const start = async () => {
   try {
     await natsWrapper.connect('ticketing', '123', 'http://nats-srv:4222')
 
+    /*
+      handle connection close
+      as we call process.exit(), better not to hide it in
+      an other file and make it visible in index entry file
+    */
+    natsWrapper.client.on('close', () => {
+      console.log('NATS connection closed')
+      process.exit()
+    })
+    process.on('SIGINT', () => natsWrapper.client.close()) // interrupt signal
+    process.on('SIGTERM', () => natsWrapper.client.close()) // terminate signal (ctrl+c)
+
     await mongoose.connect(process.env.MONGO_URI, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
