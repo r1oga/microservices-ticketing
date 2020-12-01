@@ -2,7 +2,11 @@ import mongoose from 'mongoose'
 
 import { app } from './app'
 import { natsWrapper } from './nats-wrapper'
-import { TicketCreatedListener, TicketUpdatedListener } from './events'
+import {
+  TicketCreatedListener,
+  TicketUpdatedListener,
+  ExpirationCompleteListener
+} from './events'
 
 const start = async () => {
   /*
@@ -41,6 +45,7 @@ const start = async () => {
     // Listeners
     new TicketCreatedListener(natsWrapper.client).listen()
     new TicketUpdatedListener(natsWrapper.client).listen()
+    new ExpirationCompleteListener(natsWrapper.client).listen()
 
     await mongoose.connect(MONGO_URI, {
       useNewUrlParser: true,
