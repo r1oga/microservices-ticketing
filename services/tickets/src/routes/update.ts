@@ -4,7 +4,8 @@ import {
   requireAuth,
   validateRequest,
   ForbiddenError,
-  NotFoundError
+  NotFoundError,
+  BadRequestError
 } from '@r1ogatix/common'
 
 import { Ticket } from '../models'
@@ -33,6 +34,8 @@ router.put(
 
     const ticket = await Ticket.findById(id)
     if (!ticket) throw new NotFoundError()
+    if (ticket.orderId)
+      throw new BadRequestError('Cannot edit a reserved ticket')
     if (ticket.userId !== currentUser!.id)
       throw new ForbiddenError('You are not the creator of this ticket')
 

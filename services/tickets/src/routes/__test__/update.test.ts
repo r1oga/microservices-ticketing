@@ -1,6 +1,7 @@
 import request from 'supertest'
 
 import { app } from '../../app'
+import { Ticket } from '../../models'
 import { natsWrapper } from '../../nats-wrapper'
 import { CreateTicket, fakeId } from '../../lib'
 const createTicket = CreateTicket(app)
@@ -73,4 +74,19 @@ it('publishes an event', async () => {
     .expect(200)
 
   expect(natsWrapper.client.publish).toHaveBeenCalledTimes(2)
+})
+
+it('rejects updates if ticket is reserved', async () => {
+  const cookie = global.signup()
+  const response = await createTicket({ title: 'test', price: 5 }, cookie)
+
+  const ticket = await Ticket.findById(response.body.id)
+  ticket!.set({ orderId: fakeId() })
+  await ticket!.save()
+
+  await request(app)
+    .put(`/api/tickets/${response.body.id}`)
+    .set('Cookie', cookie)
+    .send({ title: 'retest', price: 10 })
+    .expect(400)
 })
