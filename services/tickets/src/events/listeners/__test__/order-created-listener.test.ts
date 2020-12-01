@@ -43,7 +43,7 @@ it('sets the userId of the ticket', async () => {
   // Find ticket
   const updatedTicket = await Ticket.findById(ticket.id)
 
-  expect(updatedTicket!.orderId).toEqual(data.id)
+  expect(updatedTicket!.userId).toEqual(data.userId)
   expect(updatedTicket!.version).toEqual(ticket.version + 1)
 })
 
@@ -51,4 +51,16 @@ it('acks the message', async () => {
   const { listener, data, msg } = await setup()
   await listener.onMessage(data, msg)
   expect(msg.ack).toHaveBeenCalled()
+})
+
+it('publishes a ticket:updated event', async () => {
+  const { listener, data, msg } = await setup()
+  await listener.onMessage(data, msg)
+
+  expect(natsWrapper.client.publish).toHaveBeenCalled()
+
+  const { calls } = (natsWrapper.client.publish as jest.Mock).mock
+  const event = calls[0]
+  expect(event[0]).toEqual('ticket:updated')
+  expect(JSON.parse(event[1])['orderId']).toEqual(data.id)
 })

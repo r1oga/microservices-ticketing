@@ -26,8 +26,11 @@ export class OrderCreatedListener extends Listener<OrderCreatedEvent> {
     // Mark ticket as reserved by setting it orderId property
     ticket.set({ orderId })
     await ticket.save()
-    msg.ack()
 
     // Emit event as we just modified the ticket
+    // await it because we don't want to ack if the publish fails
+    await new TicketUpdatedPublisher(this.client).publish(Object.assign(ticket))
+
+    msg.ack()
   }
 }
