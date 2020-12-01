@@ -1,4 +1,5 @@
 import mongoose from 'mongoose'
+import { updateIfCurrentPlugin } from 'mongoose-update-if-current'
 import { OrderStatus } from '@r1ogatix/common'
 export { OrderStatus }
 import { TicketDoc } from './ticket'
@@ -20,6 +21,7 @@ interface OrderDoc extends mongoose.Document {
   status: OrderStatus
   expiresAt: Date
   ticket: TicketDoc
+  version: number
 }
 
 /*
@@ -55,6 +57,9 @@ const OrderSchema = new mongoose.Schema(
 
 // build a custom function into a model
 OrderSchema.statics.build = (attrs: OrderAttrs) => new Order(attrs)
+OrderSchema.set('versionKey', 'version') //by default uses __v
+OrderSchema.plugin(updateIfCurrentPlugin)
+
 const Order = mongoose.model<OrderDoc, OrderModel>('Order', OrderSchema)
 
 export { Order }

@@ -51,7 +51,7 @@ router.post(
       ticket
     })
     await order.save()
-    const { id, userId, status } = order
+    const { id, userId, status, version } = order
 
     /*
       Publish event
@@ -63,7 +63,8 @@ router.post(
       expiresAt: order.expiresAt.toISOString(),
       ticket: { id: ticket.id, price: ticket.price },
       userId,
-      status
+      status,
+      version
     })
 
     return res.status(201).send(order)

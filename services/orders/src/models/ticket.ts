@@ -1,4 +1,5 @@
 import mongoose from 'mongoose'
+import { updateIfCurrentPlugin } from 'mongoose-update-if-current'
 
 import { Order, OrderStatus } from './order'
 
@@ -22,6 +23,7 @@ export interface TicketDoc extends mongoose.Document {
   title: string
   price: number
   isReserved(): Promise<boolean>
+  version: number
 }
 
 /*
@@ -33,7 +35,7 @@ interface TicketModel extends mongoose.Model<TicketDoc> {
   build(attrs: TicketAttrs): TicketDoc
 }
 
-const TicketSchema = new mongoose.Schema(
+const ticketSchema = new mongoose.Schema(
   {
     title: { type: String, required: true },
     price: { type: Number, required: true, min: 0 }
@@ -49,13 +51,16 @@ const TicketSchema = new mongoose.Schema(
 )
 
 // build a custom function into a model
-TicketSchema.statics.build = ({ id, title, price }: TicketAttrs) =>
+ticketSchema.statics.build = ({ id, title, price }: TicketAttrs) =>
   new Ticket({
     _id: id,
     title,
     price
   })
-TicketSchema.methods.isReserved = async function () {
+
+ticketSchema.set('versionKey', 'version') //by default uses __v
+ticketSchema.plugin(updateIfCurrentPlugin)
+ticketSchema.methods.isReserved = async function () {
   // this === the ticket doc we just called `isReserved` on
   const existingOrder = await Order.findOne({
     ticket: this,
@@ -71,6 +76,6 @@ TicketSchema.methods.isReserved = async function () {
   return !!existingOrder
 }
 
-const Ticket = mongoose.model<TicketDoc, TicketModel>('Ticket', TicketSchema)
+const Ticket = mongoose.model<TicketDoc, TicketModel>('Ticket', ticketSchema)
 
 export { Ticket }
