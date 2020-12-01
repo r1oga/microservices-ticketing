@@ -19,6 +19,9 @@ export class ExpirationCompleteListener extends Listener<ExpirationCompleteEvent
     const order = await Order.findById(data.orderId).populate('ticket')
     if (!order) throw new NotFoundError()
 
+    // dont cancel completed orders
+    if (order.status === OrderStatus.Complete) return msg.ack()
+
     // unreserve ticket
     order.set({ status: OrderStatus.Cancelled })
     await order.save()
