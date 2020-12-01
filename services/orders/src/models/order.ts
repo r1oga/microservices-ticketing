@@ -1,5 +1,4 @@
 import mongoose from 'mongoose'
-import { updateIfCurrentPlugin } from 'mongoose-update-if-current'
 import { OrderStatus } from '@r1ogatix/common'
 export { OrderStatus }
 import { TicketDoc } from './ticket'
@@ -33,7 +32,7 @@ interface OrderModel extends mongoose.Model<OrderDoc> {
   build(attrs: OrderAttrs): OrderDoc
 }
 
-const OrderSchema = new mongoose.Schema(
+const orderSchema = new mongoose.Schema(
   {
     userId: { type: String, required: true },
     status: {
@@ -55,11 +54,16 @@ const OrderSchema = new mongoose.Schema(
   }
 )
 
-// build a custom function into a model
-OrderSchema.static('build', (attrs: OrderAttrs) => new Order(attrs))
-OrderSchema.set('versionKey', 'version') //by default uses __v
-OrderSchema.plugin(updateIfCurrentPlugin)
+orderSchema.set('versionKey', 'version') //by default uses __v
+orderSchema.pre('save', function (done) {
+  // @ts-ignore
+  this.$where = { version: this.get('version') - 1 }
+  done()
+})
 
-const Order = mongoose.model<OrderDoc, OrderModel>('Order', OrderSchema)
+// build a custom function into a model
+orderSchema.static('build', (attrs: OrderAttrs) => new Order(attrs))
+
+const Order = mongoose.model<OrderDoc, OrderModel>('Order', orderSchema)
 
 export { Order }

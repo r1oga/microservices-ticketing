@@ -1,5 +1,4 @@
 import mongoose from 'mongoose'
-import { updateIfCurrentPlugin } from 'mongoose-update-if-current'
 
 import { Order, OrderStatus } from './order'
 
@@ -52,6 +51,13 @@ const ticketSchema = new mongoose.Schema(
   }
 )
 
+ticketSchema.set('versionKey', 'version') //by default uses __v
+ticketSchema.pre('save', function (done) {
+  // @ts-ignore
+  this.$where = { version: this.get('version') - 1 }
+  done()
+})
+
 // build a custom functions into a model
 ticketSchema.static('findByEvent', (event: { id: string; version: number }) =>
   Ticket.findOne({ _id: event.id, version: event.version - 1 })
@@ -66,8 +72,6 @@ ticketSchema.static(
     })
 )
 
-ticketSchema.set('versionKey', 'version') //by default uses __v
-ticketSchema.plugin(updateIfCurrentPlugin)
 ticketSchema.methods.isReserved = async function () {
   // this === the ticket doc we just called `isReserved` on
   const existingOrder = await Order.findOne({
