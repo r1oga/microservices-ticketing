@@ -1,16 +1,16 @@
 import request from 'supertest'
 
 import { app } from '../../app'
-import { createTicket } from '../../lib'
+import { createTicket, fakeId } from '../../lib'
 
 it('fetches all orders for a particular user', async () => {
   // // create 3 tickets
   const [ticketOne, ticketTwo, ticketThree] = await Promise.all(
     [
-      { title: 'ticket1', price: 10 },
-      { title: 'ticket2', price: 5 },
-      { title: 'ticket3', price: 6 }
-    ].map(async ({ title, price }) => createTicket({ title, price }))
+      { title: 'ticket1', price: 10, id: fakeId() },
+      { title: 'ticket2', price: 5, id: fakeId() },
+      { title: 'ticket3', price: 6, id: fakeId() }
+    ].map(async ({ title, price, id }) => createTicket({ title, price, id }))
   )
 
   const userOne = global.signup()

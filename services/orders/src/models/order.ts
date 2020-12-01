@@ -54,12 +54,12 @@ const orderSchema = new mongoose.Schema(
   }
 )
 
-orderSchema.set('versionKey', 'version') //by default uses __v
-orderSchema.pre('save', function (done) {
-  // @ts-ignore
-  this.$where = { version: this.get('version') - 1 }
-  done()
-})
+// orderSchema.set('versionKey', 'version') //by default uses __v
+// orderSchema.pre('save', function (done) {
+//   // @ts-ignore
+//   this.$where = { version: this.get('version') - 1 }
+//   done()
+// })
 
 // build a custom function into a model
 orderSchema.static('build', (attrs: OrderAttrs) => new Order(attrs))
