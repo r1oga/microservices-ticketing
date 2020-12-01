@@ -1,4 +1,5 @@
 import { natsWrapper } from './nats-wrapper'
+import { OrderCreatedListener } from './events'
 
 const start = async () => {
   /*
@@ -25,6 +26,8 @@ const start = async () => {
     })
     process.on('SIGINT', () => natsWrapper.client.close()) // interrupt signal
     process.on('SIGTERM', () => natsWrapper.client.close()) // terminate signal (ctrl+c)
+
+    new OrderCreatedListener(natsWrapper.client).listen()
   } catch (err) {
     console.error(err)
   }
