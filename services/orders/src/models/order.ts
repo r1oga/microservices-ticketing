@@ -1,4 +1,5 @@
 import mongoose from 'mongoose'
+import { updateIfCurrentPlugin } from 'mongoose-update-if-current'
 import { OrderStatus } from '@r1ogatix/common'
 export { OrderStatus }
 import { TicketDoc } from './ticket'
@@ -54,7 +55,8 @@ const orderSchema = new mongoose.Schema(
   }
 )
 
-// orderSchema.set('versionKey', 'version') //by default uses __v
+orderSchema.set('versionKey', 'version') //by default uses __v
+orderSchema.plugin(updateIfCurrentPlugin)
 // orderSchema.pre('save', function (done) {
 //   // @ts-ignore
 //   this.$where = { version: this.get('version') - 1 }
