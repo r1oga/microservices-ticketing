@@ -56,7 +56,7 @@ const OrderSchema = new mongoose.Schema(
 )
 
 // build a custom function into a model
-OrderSchema.statics.build = (attrs: OrderAttrs) => new Order(attrs)
+OrderSchema.static('build', (attrs: OrderAttrs) => new Order(attrs))
 OrderSchema.set('versionKey', 'version') //by default uses __v
 OrderSchema.plugin(updateIfCurrentPlugin)
 

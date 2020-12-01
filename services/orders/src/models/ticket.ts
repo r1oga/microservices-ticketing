@@ -51,12 +51,15 @@ const ticketSchema = new mongoose.Schema(
 )
 
 // build a custom function into a model
-ticketSchema.statics.build = ({ id, title, price }: TicketAttrs) =>
-  new Ticket({
-    _id: id,
-    title,
-    price
-  })
+ticketSchema.static(
+  'build',
+  ({ id, title, price }: TicketAttrs) =>
+    new Ticket({
+      _id: id,
+      title,
+      price
+    })
+)
 
 ticketSchema.set('versionKey', 'version') //by default uses __v
 ticketSchema.plugin(updateIfCurrentPlugin)

@@ -39,7 +39,7 @@ const ticketSchema = new mongoose.Schema(
   },
   {
     toJSON: {
-      transform(_, ret) {
+      transform(_: any, ret: any) {
         ret.id = ret._id
         delete ret._id
       }
@@ -51,7 +51,7 @@ ticketSchema.set('versionKey', 'version') //by default uses __v
 ticketSchema.plugin(updateIfCurrentPlugin)
 
 // build a custom function into a model
-ticketSchema.statics.build = (attrs: TicketAttrs) => new Ticket(attrs)
+ticketSchema.static('build', (attrs: TicketAttrs) => new Ticket(attrs))
 const Ticket = mongoose.model<TicketDoc, TicketModel>('Ticket', ticketSchema)
 
 export { Ticket }
