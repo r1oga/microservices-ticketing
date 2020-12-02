@@ -1,6 +1,6 @@
 import { TicketAsRow } from '../components'
 
-const LandingPage = ({ currentUser, tickets }) => {
+const LandingPage = ({ tickets }) => {
   return (
     <>
       <h1>Landing page!!</h1>

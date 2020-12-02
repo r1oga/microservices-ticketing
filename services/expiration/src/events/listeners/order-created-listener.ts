@@ -13,7 +13,7 @@ export class OrderCreatedListener extends Listener<OrderCreatedEvent> {
 
     await expirationQueue.add(
       { orderId: data.id },
-      { delay: 10000 /* UPDATE TO 15 MIN FOR PROD*/ }
+      { delay: 60000 /* UPDATE TO 15 MIN FOR PROD*/ }
     )
 
     msg.ack()
