@@ -3,6 +3,7 @@ require('dotenv').config()
 
 import { app } from '../../app'
 import { fakeId, createOrder } from '../../lib'
+import { Payment } from '../../models'
 import { OrderStatus } from '@r1ogatix/common'
 import { stripe } from '../../lib'
 
@@ -66,7 +67,7 @@ it('returns 400 when purchasing an already cancelled order', async () => {
 // })
 
 // alternative stripe test with real API instead of mock
-it('returns 201 with valid inputs', async () => {
+it('returns 201 and stores a payment in DB if valid inputs are provided', async () => {
   const userId = fakeId()
   const price = Math.floor(Math.random() * 100000)
   const order = await createOrder({
@@ -81,7 +82,7 @@ it('returns 201 with valid inputs', async () => {
     .post('/api/payments')
     .set('Cookie', global.signup(userId))
     .send({ token: 'tok_visa', orderId: order.id })
-  // .expect(201)
+    .expect(201)
 
   const stripeCharges = await stripe.charges.list({ limit: 50 })
   const stripeCharge = stripeCharges.data.find(
@@ -90,4 +91,11 @@ it('returns 201 with valid inputs', async () => {
 
   expect(stripeCharge).toBeDefined()
   expect(stripeCharge!.currency).toEqual('usd')
+
+  const payment = await Payment.findOne({
+    stripeId: stripeCharge!.id,
+    orderId: order.id
+  })
+
+  expect(payment).not.toBeNull()
 })
