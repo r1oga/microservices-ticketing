@@ -15,13 +15,15 @@ const start = async () => {
     MONGO_URI,
     NATS_CLUSTER_ID,
     NATS_URL,
-    NATS_CLIENT_ID
+    NATS_CLIENT_ID,
+    STRIPE_KEY
   } = process.env
   if (!JWT_KEY) throw new Error('JWT_KEY not defined')
   if (!MONGO_URI) throw new Error('MONGO_URI not defined')
   if (!NATS_CLUSTER_ID) throw new Error('NATS_CLUSTER_ID not defined')
   if (!NATS_URL) throw new Error('NATS_URL not defined')
   if (!NATS_CLIENT_ID) throw new Error('NATS_CLIENT_ID not defined')
+  if (!STRIPE_KEY) throw new Error('STRIPE_KEY not defined')
 
   try {
     await natsWrapper.connect(NATS_CLUSTER_ID, NATS_CLIENT_ID, NATS_URL)

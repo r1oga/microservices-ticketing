@@ -8,6 +8,8 @@ import {
   ForbiddenError,
   OrderStatus
 } from '@r1ogatix/common'
+
+import { stripe } from '../lib'
 import { Order } from '../models'
 
 const router = Router()
@@ -34,6 +36,12 @@ router.post(
       )
     if (order.status == OrderStatus.Cancelled)
       throw new BadRequestError('Cannot pay for a cancelled order')
+
+    await stripe.charges.create({
+      currency: 'usd',
+      amount: order.price * 100, // cents
+      source: token
+    })
 
     res.send({ success: true })
   }
