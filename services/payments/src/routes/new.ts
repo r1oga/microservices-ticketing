@@ -4,8 +4,11 @@ import {
   requireAuth,
   validateRequest,
   BadRequestError,
-  NotFoundError
+  NotFoundError,
+  ForbiddenError,
+  OrderStatus
 } from '@r1ogatix/common'
+import { Order } from '../models'
 
 const router = Router()
 
@@ -17,7 +20,21 @@ router.post(
     body('orderId').notEmpty().withMessage('orderId must be provided')
   ],
   validateRequest,
-  (req: Request, res: Response) => {
+  async (req: Request, res: Response) => {
+    const {
+      currentUser,
+      body: { token, orderId }
+    } = req
+    const order = await Order.findById(orderId)
+
+    if (!order) throw new NotFoundError()
+    if (order.userId !== currentUser!.id)
+      throw new ForbiddenError(
+        'Not authorized to pay for an order/ticket you do not own'
+      )
+    if (order.status == OrderStatus.Cancelled)
+      throw new BadRequestError('Cannot pay for a cancelled order')
+
     res.send({ success: true })
   }
 )

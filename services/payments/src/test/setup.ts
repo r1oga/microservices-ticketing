@@ -48,11 +48,11 @@ afterAll(async () => {
   globally scoped function for easier use
   only available in test env
 */
-global.signup = (email = 'r1oga@test.com') => {
+global.signup = (email = 'r1oga@test.com', id?: string) => {
   // Create fake cookie
   // Build a JWT payload & create the JWT
   const token = jwt.sign(
-    { email, id: new mongoose.Types.ObjectId().toHexString() },
+    { email, id: id || new mongoose.Types.ObjectId().toHexString() },
     process.env.JWT_KEY!
   )
 
