@@ -41,3 +41,6 @@
 
 
 ## Events
+
+## Tests
+In each `/services/<service>` folders: `yarn && yarn run test`
