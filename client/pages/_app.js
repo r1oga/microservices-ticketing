@@ -3,7 +3,8 @@ import 'bootstrap/dist/css/bootstrap.css'
 import { Header } from '../components'
 import { buildClient } from '../lib'
 
-const _App = ({ Component, pageProps, currentUser }) => {
+const _App = ({ Component, pageProps }) => {
+  const { currentUser } = pageProps
   return (
     <>
       <Header currentUser={currentUser} />
@@ -19,15 +20,15 @@ const _App = ({ Component, pageProps, currentUser }) => {
 _App.getInitialProps = async appContext => {
   const axios = buildClient(appContext.ctx)
   const { data } = await axios.get('/api/users/currentuser')
-  let pageProps = {}
+  let props = {}
   if (appContext.Component.getInitialProps) {
-    pageProps = await appContext.Component.getInitialProps(
+    props = await appContext.Component.getInitialProps(
       appContext.ctx,
       axios,
       data.currentUser
     )
   }
-  return { pageProps, ...data }
+  return { pageProps: { ...data, ...props } }
 }
 
 export default _App
