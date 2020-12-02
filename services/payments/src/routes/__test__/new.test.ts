@@ -78,7 +78,9 @@ it('returns 201 and stores a payment in DB if valid inputs are provided', async 
     status: OrderStatus.Created
   })
 
-  await request(app)
+  const {
+    body: { id }
+  } = await request(app)
     .post('/api/payments')
     .set('Cookie', global.signup(userId))
     .send({ token: 'tok_visa', orderId: order.id })
@@ -98,4 +100,5 @@ it('returns 201 and stores a payment in DB if valid inputs are provided', async 
   })
 
   expect(payment).not.toBeNull()
+  expect(id).toEqual(payment!.id)
 })

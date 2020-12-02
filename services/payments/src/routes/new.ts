@@ -11,6 +11,8 @@ import {
 
 import { stripe } from '../lib'
 import { Order, Payment } from '../models'
+import { PaymentCreatedPublisher } from '../events'
+import { natsWrapper } from '../nats-wrapper'
 
 const router = Router()
 
@@ -47,7 +49,12 @@ router.post(
     const payment = Payment.build({ orderId, stripeId: charge.id })
     await payment.save()
 
-    res.status(201).send({ success: true })
+    // emit event
+    await new PaymentCreatedPublisher(natsWrapper.client).publish(
+      Object.assign(payment, { id: payment.id })
+    )
+
+    res.status(201).send({ id: payment.id })
   }
 )
 
