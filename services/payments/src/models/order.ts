@@ -2,7 +2,7 @@ import { Document, model, Model, Schema } from 'mongoose'
 import { updateIfCurrentPlugin } from 'mongoose-update-if-current'
 import { OrderStatus } from '@r1ogatix/common'
 
-interface OrderAttrs {
+export interface OrderAttrs {
   id: string
   status: OrderStatus
   version: number
@@ -41,17 +41,20 @@ const orderSchema = new Schema(
 orderSchema.set('versionKey', 'version')
 orderSchema.plugin(updateIfCurrentPlugin)
 
-orderSchema.static(
-  'build',
-  ({ id, version, price, userId, status }: OrderAttrs) =>
-    new Order({
-      _id: id,
-      version,
-      price,
-      userId,
-      status
-    })
-)
+orderSchema.statics.build = ({
+  id,
+  version,
+  price,
+  userId,
+  status
+}: OrderAttrs) =>
+  new Order({
+    _id: id,
+    version,
+    price,
+    userId,
+    status
+  })
 
 const Order = model<OrderDoc, OrderModel>('Order', orderSchema)
 
