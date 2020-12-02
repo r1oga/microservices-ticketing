@@ -1,19 +1,33 @@
 import { useState } from 'react'
 
+import { useRequest } from '../hooks'
+
 const TicketForm = () => {
   const [title, setTitle] = useState('')
   const [price, setPrice] = useState('')
+  const { doRequest, errors } = useRequest({
+    url: '/api/tickets',
+    method: 'post',
+    body: { title, price },
+    onSuccess: ticket => console.log(ticket)
+  })
 
   const onBlur = () => {
-    // round
+    // round to 2 decimmals
     const value = parseFloat(price)
     if (isNaN(value)) return
     setPrice(value.toFixed(2))
   }
+
+  const onSubmit = e => {
+    e.preventDefault()
+    doRequest()
+  }
+
   return (
     <div>
       <h1>Create a ticket</h1>
-      <form action=''>
+      <form onSubmit={onSubmit}>
         <div className='form-group'>
           <label>Title</label>
           <input
@@ -33,6 +47,7 @@ const TicketForm = () => {
             onChange={e => setPrice(e.target.value)}
           />
         </div>
+        {errors}
         <button className='btn btn-primary'>Submit</button>
       </form>
     </div>
