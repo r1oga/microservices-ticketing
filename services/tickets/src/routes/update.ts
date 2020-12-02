@@ -20,8 +20,9 @@ router.put(
   [
     body('title')
       .notEmpty()
+      .withMessage('Title cannot be empty')
       .isString()
-      .withMessage('Valid title required (not empty string)'),
+      .withMessage('Invalid title (must be string)'),
     body('price').isFloat({ min: 0 }).withMessage('Valid price required (> 0)')
   ],
   validateRequest,
