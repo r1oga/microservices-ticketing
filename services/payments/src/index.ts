@@ -42,11 +42,11 @@ const start = async () => {
       useUnifiedTopology: true,
       useCreateIndex: true
     })
-    console.log('Connected to tickets DB')
+    console.log('Connected to payments DB')
   } catch (err) {
     console.error(err)
   }
-  app.listen(3000, () => console.log(`Tickets service 👂 on port 3000`))
+  app.listen(3000, () => console.log(`Payments service 👂 on port 3000`))
 }
 
 start()
