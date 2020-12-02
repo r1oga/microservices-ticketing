@@ -1,14 +1,16 @@
-import { Order } from '../../components'
 import StripeCheckout from 'react-stripe-checkout'
+import { useRouter } from 'next/router'
 
+import { Order } from '../../components'
 import { useRequest } from '../../hooks'
 
 const OrderShow = ({ order, currentUser, stripeKey }) => {
+  const router = useRouter()
   const { doRequest, errors } = useRequest({
     url: '/api/payments',
     method: 'post',
     body: { orderId: order.id },
-    onSuccess: payment => console.log(payment)
+    onSuccess: () => router.push('/orders')
   })
   return (
     <>
