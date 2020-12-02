@@ -11,7 +11,10 @@ export class OrderCreatedListener extends Listener<OrderCreatedEvent> {
   async onMessage(data: OrderCreatedEvent['data'], msg: Message) {
     const delay = msFromNowUntil(data.expiresAt)
 
-    await expirationQueue.add({ orderId: data.id }, { delay })
+    await expirationQueue.add(
+      { orderId: data.id },
+      { delay: 10000 /* UPDATE TO 15 MIN FOR PROD*/ }
+    )
 
     msg.ack()
   }

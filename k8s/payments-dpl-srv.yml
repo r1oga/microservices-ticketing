@@ -17,7 +17,7 @@ spec:
           image: us.gcr.io/ticketing-dev-296317/payments
           env:
             - name: NATS_CLIENT_ID
-              valueFrom: # take pod ID
+              valueFrom:
                 fieldRef:
                   fieldPath: metadata.name
             - name: NATS_URL
@@ -25,7 +25,7 @@ spec:
             - name: NATS_CLUSTER_ID
               value: 'ticketing'
             - name: MONGO_URI
-              value: 'mongodb://payments-mongo-srv:27017/payments' #/payments is to define the DB/table name
+              value: 'mongodb://payments-mongo-srv:27017/payments'
             - name: JWT_KEY
               valueFrom:
                 secretKeyRef:
@@ -41,5 +41,6 @@ spec:
     app: payments
   ports:
     - name: payments
+      protocol: TCP
       port: 3000
       targetPort: 3000

@@ -3,6 +3,7 @@ import mongoose from 'mongoose'
 import { app } from './app'
 import { natsWrapper } from './nats-wrapper'
 import { OrderCancelledListener, OrderCreatedListener } from './events'
+
 const start = async () => {
   /*
     type guard for env variables
