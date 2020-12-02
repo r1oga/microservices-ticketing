@@ -1,4 +1,4 @@
-import { Ticket } from '../components'
+import { TicketAsRow } from '../components'
 
 const LandingPage = ({ currentUser, tickets }) => {
   return (
@@ -9,11 +9,12 @@ const LandingPage = ({ currentUser, tickets }) => {
           <tr>
             <th>Title</th>
             <th>Price</th>
+            <th>Link</th>
           </tr>
         </thead>
         <tbody>
-          {tickets.map(ticket => (
-            <Ticket {...ticket} />
+          {tickets.map((ticket, index) => (
+            <TicketAsRow {...ticket} key={index} />
           ))}
         </tbody>
       </table>
