@@ -2,7 +2,7 @@ import mongoose from 'mongoose'
 
 import { app } from './app'
 import { natsWrapper } from './nats-wrapper'
-
+import { OrderCancelledListener, OrderCreatedListener } from './events'
 const start = async () => {
   /*
     type guard for env variables
@@ -36,6 +36,9 @@ const start = async () => {
     })
     process.on('SIGINT', () => natsWrapper.client.close()) // interrupt signal
     process.on('SIGTERM', () => natsWrapper.client.close()) // terminate signal (ctrl+c)
+
+    new OrderCreatedListener(natsWrapper.client).listen()
+    new OrderCancelledListener(natsWrapper.client).listen()
 
     await mongoose.connect(MONGO_URI, {
       useNewUrlParser: true,
