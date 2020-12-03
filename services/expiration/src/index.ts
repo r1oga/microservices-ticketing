@@ -2,6 +2,7 @@ import { natsWrapper } from './nats-wrapper'
 import { OrderCreatedListener } from './events'
 
 const start = async () => {
+  console.log('Starting...')
   /*
     type guard for env variables
     in start function rather than route file
