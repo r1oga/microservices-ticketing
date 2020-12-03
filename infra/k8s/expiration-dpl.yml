@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: expiration
-          image: us.gcr.io/ticketing-dev-296317/expiration
+          image: r1oga/expiration
           env:
             - name: NATS_CLIENT_ID
               valueFrom: # take pod ID
