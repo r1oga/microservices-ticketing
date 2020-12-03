@@ -56,6 +56,7 @@ userSchema.pre('save', async function (done) {
     const hash = await Password.hash(this.get('password'))
     this.set('password', hash)
   }
+  // @ts-ignore
   done()
 })
 
