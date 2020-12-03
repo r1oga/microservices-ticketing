@@ -2,7 +2,7 @@ import mongoose from 'mongoose'
 import { app } from './app'
 
 const start = async () => {
-  console.log('Start!!')
+  console.log('Starting up...')
   try {
     /*
       type guard for process.env.JWT_KEY
