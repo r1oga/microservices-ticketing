@@ -10,7 +10,7 @@ import {
 } from './events'
 
 const start = async () => {
-  console.log('Starting!!')
+  console.log('Starting...')
   /*
     type guard for env variables
     in start function rather than route file
