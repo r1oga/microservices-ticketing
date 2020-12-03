@@ -27,8 +27,7 @@ const buildClient = ({ req }) => {
   const config =
     typeof window === 'undefined'
       ? {
-          baseURL:
-            'http://ingress-nginx-controller.ingress-nginx.svc.cluster.local',
+          baseURL: 'http://www.tix-r1oga.xyz',
           headers: req.headers
         }
       : { baseURL: '' }
