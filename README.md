@@ -7,7 +7,7 @@
 - Minikube
   1. Rebuild images: `docker build -f <path/to/Dockerfile> -t <tag> .`
   2. Push to Docker hub: `docker push -t <tag>`
-  3. Update image values in [k8s config files](./k8s)
+  3. Update image values in [k8s config files](./infra/k8s)
   4. `skaffold dev`
 
 ## Features
